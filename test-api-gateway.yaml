@@ -1,0 +1,33 @@
+Resources:
+  ApiGatewayRestApi: # default serverless logical id
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: test-gateway
+      Body:
+        swagger: '2.0'
+        schemes:
+          - https
+        paths:
+          /foo/{proxy+}:
+            x-amazon-apigateway-any-method:
+              produces:
+              - "application/json"
+              parameters:
+              - name: "proxy"
+                in: "path"
+                required: true
+                type: "string"
+              responses: {}
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                uri: "https://httpstat.us/{proxy}"
+                requestParameters:
+                  integration.request.header.Accept-Encoding: "'identity'"
+                  integration.request.path.proxy: "method.request.path.proxy"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "ANY"
+                cacheKeyParameters:
+                - "method.request.path.proxy"
+                type: "http_proxy"

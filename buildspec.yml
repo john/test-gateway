@@ -3,21 +3,31 @@ version: 0.1
 phases:
   install:
     commands:
-      - echo "nothing to do in install"
+      - echo "Starting install `date` in `pwd`"
+      
+      - echo "Installing git..."
+      - apt-get install git
+      
   pre_build:
     commands:
-      - echo "Installing dependencies - `pwd`"
-      - cd app && npm install
-      - echo "dependencies install completed `date`"
+      - echo "Starting pre_build `date` in `pwd`"
+      
+      - echo "Configuring git..."
+      - git config --global credential.helper '!aws codecommit credential-helper $@'
+      - git config --global credential.UseHttpPath true
+      
+      - echo "Cloning repo..."
+      - git clone https://git-codecommit.us-west-2.amazonaws.com/v1/repos/test-gateway
+      
   build:
     commands:
       - echo "Starting build `date` in `pwd`"
-      - aws cloudformation package --template-file app-sam.yaml --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file app-output_sam.yaml
+      - echo "Copying CloudFormation template to S3..."
+      - aws s3 cp test-gateway/test-api-gateway.yaml s3://aws-bucket-head/testapigateway.yaml
+      
+      - echo "Updating CloudFormation Stack..."
+      - aws cloudformation update-stack --stack-name test-gateway --template-url https://s3-us-west-2.amazonaws.com/aws-bucket-head/testapigateway.yaml
+      
   post_build:
     commands:
       - echo "build completed on `date`"
-
-artifacts:
-  files:
-    - app-output_sam.yaml
-  discard-paths: yes

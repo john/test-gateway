@@ -6,10 +6,10 @@ These CloudFormation templates are super basic and just for demonstration purpos
 
 ### Create Stack
 
-`aws cloudformation create-stack --stack-name test-gateway --template-url https://s3-us-west-2.amazonaws.com/aws-bucket-head/testapigateway.yaml`
+`aws cloudformation create-stack --stack-name test-gateway --template-url https://s3-us-west-2.amazonaws.com/my-cf-bucket/testapigateway.yaml`
 
 ### Update Stack
-`aws cloudformation update-stack --stack-name test-gateway --template-url https://s3-us-west-2.amazonaws.com/aws-bucket-head/testapigateway.yaml`
+`aws cloudformation update-stack --stack-name test-gateway --template-url https://s3-us-west-2.amazonaws.com/my-cf-bucket/testapigateway.yaml`
 
 ### Set up CodeBuild project
 Coming soon

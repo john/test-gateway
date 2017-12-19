@@ -2,7 +2,7 @@ These CloudFormation templates are super basic and just for demonstration purpos
 
 # In This Repo
 
-## CloudFormation templates
+## CloudFormation commands
 
 ### Create Stack
 
